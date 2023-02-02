@@ -20,27 +20,30 @@ def Overview_Missing_Values(df):
 
     return Overview_Missing_Values.head(head)
 
-def analyse_feature(train,test, feature_name):
-    if train[feature_name].dtype!="O":
-        fig = px.scatter(train, x=feature_name, y="SalePrice", trendline="ols")
+def Analyse_Features(train,test,target,feature):
+    if train[feature].dtype!="O":
+        fig = px.scatter(train, x=feature, y=target, trendline="ols")
         fig.show()
     else:
-        fig = px.box(train, x=feature_name, y="SalePrice")
+        fig = px.box(train, x=feature, y=target)
         fig.show()
     print("\n****INFO****")
-    print(train[feature_name].describe())
+    print(train[feature].describe())
     print("\n****VALUE COUNTS****")
-    print(train[feature_name].value_counts())
+    print(train[feature].value_counts())
     print("\n****VALUE AVG SALE PRICE****")
-    print(train.groupby(feature_name)['SalePrice'].mean())
-    if train[feature_name].dtype!="O":
-        print("\nSkewness:",str(skew(train[feature_name])))
+    print(train.groupby(feature)[target].mean())
+    if train[feature].dtype!="O":
+        print("\nSkewness:",str(skew(train[feature])))
 
     print("\n****TEST INFO****")
-    print(test[feature_name].describe())
+    print(test[feature].describe())
     print("\n****VALUE COUNTS****")
-    print(test[feature_name].value_counts())
+    print(test[feature].value_counts())
     
-    print("\nOnly in Train: "+str(list(set(train[feature_name].value_counts().index.values) - set(test[feature_name].value_counts().index.values))))
-    print("Only in Test: "+ str(list(set(test[feature_name].value_counts().index.values) - set(train[feature_name].value_counts().index.values))))
+    print("\nOnly in Train: "+str(list(set(train[feature].value_counts().index.values) - set(test[feature].value_counts().index.values))))
+    print("Only in Test: "+ str(list(set(test[feature].value_counts().index.values) - set(train[feature].value_counts().index.values))))
     
+def Impute_Missing_Values(column,value):
+    column = column.fillna(value)
+    return df

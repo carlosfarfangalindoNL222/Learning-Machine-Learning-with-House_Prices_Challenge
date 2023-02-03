@@ -29,6 +29,8 @@ def Analyse_Features(train,test,target,feature):
         fig.show()
     print("\n****INFO****")
     print(train[feature].describe())
+    print("\n****Missing Values****")
+    print(train[feature].isnull().sum())
     print("\n****VALUE COUNTS****")
     print(train[feature].value_counts())
     print("\n****VALUE AVG SALE PRICE****")
@@ -43,7 +45,32 @@ def Analyse_Features(train,test,target,feature):
     
     print("\nOnly in Train: "+str(list(set(train[feature].value_counts().index.values) - set(test[feature].value_counts().index.values))))
     print("Only in Test: "+ str(list(set(test[feature].value_counts().index.values) - set(train[feature].value_counts().index.values))))
-    
-def Impute_Missing_Values(column,value):
-    column = column.fillna(value)
-    return df
+
+def Overview_Inconsistencies(train,test):
+    train = train.drop(['SalePrice'],axis=1)
+    for i in train.columns:
+        train_l = train[i].value_counts().index.values
+        test_l = test[i].value_counts().index.values
+        inconst_train = list(set(train_l) - set(test_l))
+        inconst_test = list(set(test_l) - set(train_l))
+        if len(inconst_train) > 0 or len(inconst_test) > 0:
+            print('---------------------')
+            print(f"Only in train[{i}]: "+str(inconst_train[:5]))
+            print(f"Only in test[{i}]: "+ str(inconst_test[:5]))
+            print('---------------------')
+      
+
+def Overview_Unique_Values(df,percentage=0.85):
+    for i in df.columns:
+        sum_null = df[i].isnull().sum()
+        max_value = df[i].value_counts().max()
+        if max_value > sum_null:
+            if max_value > df.shape[0]*percentage:
+                print(f'VALUE: {df[i].value_counts().index.max()} = {(max_value/df.shape[0])*100}%')
+                print(df[i].value_counts())
+                print('---------------------')
+        else:
+            if sum_null > df.shape[0]*percentage:
+                print(f'Value: Null = {(sum_null/df.shape[0])*100}%')
+                print(df[i].value_counts())
+                print('---------------------')

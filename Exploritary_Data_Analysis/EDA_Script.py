@@ -62,7 +62,7 @@ def Overview_Inconsistencies(train,test,target):
         inconst_train = list(set(train_l) - set(test_l))
         inconst_test = list(set(test_l) - set(train_l))
         if len(inconst_train) > 0 or len(inconst_test) > 0:
-            print('---------------------')
+            print('------------------------------------------------------------------')
             print(f"Only in train[{i}]: "+str(inconst_train[:5]))
             print(f"Only in test[{i}]: "+ str(inconst_test[:5]))
             print("\n****TRAIN VALUE COUNTS****")
@@ -71,7 +71,7 @@ def Overview_Inconsistencies(train,test,target):
             print(test[i].value_counts())
             print("\n****VALUE AVG SALE PRICE****")
             print(train.groupby(i)[target].mean())
-            print('---------------------')
+            print('------------------------------------------------------------------')
       
 
 def Overview_Unique_Values(df,percentage=0.85):
@@ -82,9 +82,9 @@ def Overview_Unique_Values(df,percentage=0.85):
             if max_value > df.shape[0]*percentage:
                 print(f'VALUE: {df[i].value_counts().index.max()} = {(max_value/df.shape[0])*100}%')
                 print(df[i].value_counts())
-                print('---------------------')
+                print('------------------------------------------------------------------')
         else:
             if sum_null > df.shape[0]*percentage:
                 print(f'Value: Null = {(sum_null/df.shape[0])*100}%')
                 print(df[i].value_counts())
-                print('---------------------')
+                print('------------------------------------------------------------------')

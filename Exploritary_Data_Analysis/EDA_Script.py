@@ -88,3 +88,11 @@ def Overview_Unique_Values(df,percentage=0.85):
                 print(f'Value: Null = {(sum_null/df.shape[0])*100}%')
                 print(df[i].value_counts())
                 print('------------------------------------------------------------------')
+
+def Check_Outliers(df,target,feature):
+    fig = px.scatter(df, x=feature, y=target, trendline="ols")
+    fig.show()
+    corr = df.corr()
+    target_corr = corr["SalePrice"]
+    corr_feature = pd.DataFrame(target_corr, df[feature])
+    return corr_feature.head(len(target_corr))

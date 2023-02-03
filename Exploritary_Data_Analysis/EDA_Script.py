@@ -19,6 +19,13 @@ def Overview_Missing_Values(df):
     fig.show()
 
     return Overview_Missing_Values.head(head)
+def Overview_Correlation(df,target):
+    #use only numerical values of df
+    df = df.select_dtypes(exclude=['object'])
+    corr = df.corr()
+    target_corr = corr["SalePrice"]
+    corr_df = pd.DataFrame(target_corr, df.columns).sort_values(by="SalePrice", ascending=False)
+    return corr_df.head(len(target_corr))
 
 def Analyse_Features(train,test,target,feature):
     if train[feature].dtype!="O":
@@ -46,9 +53,10 @@ def Analyse_Features(train,test,target,feature):
     print("\nOnly in Train: "+str(list(set(train[feature].value_counts().index.values) - set(test[feature].value_counts().index.values))))
     print("Only in Test: "+ str(list(set(test[feature].value_counts().index.values) - set(train[feature].value_counts().index.values))))
 
-def Overview_Inconsistencies(train,test):
-    train = train.drop(['SalePrice'],axis=1)
+def Overview_Inconsistencies(train,test,target):
     for i in train.columns:
+        if i == 'SalePrice':
+            continue
         train_l = train[i].value_counts().index.values
         test_l = test[i].value_counts().index.values
         inconst_train = list(set(train_l) - set(test_l))
@@ -57,6 +65,12 @@ def Overview_Inconsistencies(train,test):
             print('---------------------')
             print(f"Only in train[{i}]: "+str(inconst_train[:5]))
             print(f"Only in test[{i}]: "+ str(inconst_test[:5]))
+            print("\n****TRAIN VALUE COUNTS****")
+            print(train[i].value_counts())
+            print("\n****TEST VALUE COUNTS****")
+            print(test[i].value_counts())
+            print("\n****VALUE AVG SALE PRICE****")
+            print(train.groupby(i)[target].mean())
             print('---------------------')
       
 

@@ -89,10 +89,43 @@ def Overview_Unique_Values(df,percentage=0.85):
                 print(df[i].value_counts())
                 print('------------------------------------------------------------------')
 
-def Check_Outliers(df,target,feature):
+def Check_Outliers(df,target,feature, num, operator):
+    #Before removing outliers
     fig = px.scatter(df, x=feature, y=target, trendline="ols")
     fig.show()
-    corr = df.corr()
-    target_corr = corr["SalePrice"]
-    corr_feature = pd.DataFrame(target_corr, df[feature])
-    return corr_feature.head(len(target_corr))
+    before_correlation = df[feature].corr(df[target])
+    #Remove outliers
+    a_df = df.copy()
+    if operator == 'greater':
+        a_df.loc[a_df[feature] > num, feature] = num
+    elif operator == 'smaller':
+        a_df.loc[a_df[feature] < num, feature] = num
+    #After remove outliers
+    fig = px.scatter(a_df, x=feature, y=target, trendline="ols")
+    fig.show()
+    after_correlation = a_df[feature].corr(a_df[target])
+    print(f'Before: {before_correlation}')
+    print(f'After: {after_correlation}')
+    print(f'Difference: {(after_correlation-before_correlation)/before_correlation*100}%')
+
+def Overview_Categories(df):
+    #Categorical features
+    df_categories = df.select_dtypes(include=['object'])
+    #Create Dataframe
+    overview_categories = pd.DataFrame(df_categories.columns, columns=['Feature'])
+    #Add unique values and counts
+    unique_values = []
+    unique_counts = []
+    for col in df_categories.columns:
+        unique_values.append(df[col].unique())
+        unique_counts.append(len(df[col].unique()))
+    overview_categories["Categories"] = unique_values
+    overview_categories["Number"] = unique_counts
+
+    return overview_categories.head(len(overview_categories))
+
+def Check_Skewness(df):
+    sk_df = df.copy()
+    skewded_features = df.apply(lambda x: x.skew()).sort_values(ascending=False)
+    skewness_table = pd.DataFrame({'Skew':skewded_features})
+    return skewness_table.head(len(skewness_table))

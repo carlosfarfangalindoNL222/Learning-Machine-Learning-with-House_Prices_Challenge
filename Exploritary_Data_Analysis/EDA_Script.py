@@ -19,6 +19,7 @@ def Overview_Missing_Values(df):
     fig.show()
 
     return Overview_Missing_Values.head(head)
+
 def Overview_Correlation(df,target):
     #use only numerical values of df
     df = df.select_dtypes(exclude=['object'])
@@ -73,7 +74,6 @@ def Overview_Inconsistencies(train,test,target):
             print(train.groupby(i)[target].mean())
             print('------------------------------------------------------------------')
       
-
 def Overview_Unique_Values(df,percentage=0.85):
     for i in df.columns:
         sum_null = df[i].isnull().sum()
@@ -125,7 +125,26 @@ def Overview_Categories(df):
     return overview_categories.head(len(overview_categories))
 
 def Check_Skewness(df):
-    sk_df = df.copy()
     skewded_features = df.apply(lambda x: x.skew()).sort_values(ascending=False)
     skewness_table = pd.DataFrame({'Skew':skewded_features})
-    return skewness_table.head(len(skewness_table))
+    return skewness_table.head(30)
+
+def Log_Transform(train,test,target,skewness):
+    sk_features = train.apply(lambda x: x.skew()).sort_values(ascending=False)
+    sk_table = pd.DataFrame({'Skew':sk_features})
+    skewness = sk_table[abs(sk_table) > skewness]
+    train_skew = train.copy()
+    test_skew = test.copy()
+    for feat in skewness.index:
+        if feat == target:
+            train_skew[feat] = np.log1p(train_skew[feat])
+            continue
+        train_skew[feat] = np.log1p(train_skew[feat])
+        test_skew[feat] = np.log1p(test_skew[feat])
+    return train_skew,test_skew
+
+def Check_INF_values(df):
+    for i in df.columns:
+        if ((df[i] == np.inf) | (df[i] == -np.inf)).sum() > 0:
+            print(i)
+    print('Done')

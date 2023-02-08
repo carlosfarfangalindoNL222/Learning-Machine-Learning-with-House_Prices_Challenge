@@ -252,5 +252,5 @@ def hypertuning(X_train, y_train, X_cv, y_cv, ml_model, model_param1, model_para
     fig.show()
     # Calculate the minimum difference between CV and Train MSE
     m_d = cv_mse - train_mse
-    print(f"Minimum CV MSE is {cv_mse.min()} at alpha = {params_list[cv_mse.argmin()]}")
-    print(f"Minimum difference between CV and Train MSE is {m_d.min()} at alpha = {params_list[m_d.argmin()]}")
+    print(f"Minimum CV MSE is {cv_mse.min()} at {model_param1} = {params_list[cv_mse.argmin()]}")
+    print(f"Minimum difference between CV and Train MSE is {m_d.min()} at {model_param1} = {params_list[m_d.argmin()]}")

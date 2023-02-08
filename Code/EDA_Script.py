@@ -248,7 +248,7 @@ def hypertuning(X_train, y_train, X_cv, y_cv, ml_model, model_param1, model_para
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=params_list, y=train_mse, name='Train MSE', mode='lines+markers'))  
     fig.add_trace(go.Scatter(x=params_list, y=cv_mse, name='CV MSE' , mode='lines+markers'))
-    fig.update_layout(title='Ridge Regression', xaxis_title='Alpha', yaxis_title='MSE')
+    fig.update_layout(title=f'{ml_model.__name__}', xaxis_title='Alpha', yaxis_title='MSE')
     fig.show()
     # Calculate the minimum difference between CV and Train MSE
     m_d = cv_mse - train_mse

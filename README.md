@@ -13,6 +13,6 @@ Than the second at 09 jan 2023: RSME of 0.29853 using Multiple Linear Regression
 Than the last at 4 feb 2023: RSME of 0.11564 (without the cheater with RSME < 0.05) place 15th (top 1%) using Ridge, Lasso, CatBooster and XGBooster with improved Feature Engineering. 
 - see thismap
 
-Also credit to MURAT CIHAN SORKUN on Kaggle, his notebooks really help me understood Feature Engineering better!
+Also credit to https://www.kaggle.com/sorkun on Kaggle, his notebooks really help me understood Feature Engineering better!
 
 I hope you can learn something from my notebooks.

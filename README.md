@@ -3,7 +3,7 @@
 This is my first machine Learning Project. 
 I have made many jupyter notebooks for this competitions.
 
-### First submission
+First submission
 Made my first submission at 29 dec 2022: RMSE of 1.11734 using Linear Regression with one variable....
 
 Than the second at 09 jan 2023: RSME of 0.29853 using Multiple Linear Regression and Feature Engineering
